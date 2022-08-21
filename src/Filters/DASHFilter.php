@@ -69,8 +69,8 @@ class DASHFilter extends FormatFilter
         $name = $this->dash->pathInfo(PATHINFO_FILENAME);
 
         $init = [
-            //"use_timeline"      => 1,
-            //"use_template"      => 1,
+            "use_timeline"      => 0,
+            "use_template"      => 0,
             //"init_seg_name"     => $name . '_init_$RepresentationID$.$ext$',
             //"media_seg_name"    => $name . '_chunk_$RepresentationID$_$Number%05d$.$ext$',
             "seg_duration"      => $this->dash->getSegDuration(),
