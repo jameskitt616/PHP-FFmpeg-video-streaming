@@ -56,6 +56,28 @@ class HLS extends Streaming
     /** @var array */
     private $subtitles = [];
 
+    /** @var int */
+    private $audioStreamCount = 0;
+
+    /**
+     * @param int $audioStreamCount
+     * @return HLS
+     */
+    public function setAudioStreamCount(int $audioStreamCount)
+    {
+        $this->audioStreamCount = $audioStreamCount;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAudioStreamCount(): int
+    {
+        return $this->audioStreamCount;
+    }
+
+
     /**
      * @return string
      */
@@ -302,7 +324,7 @@ class HLS extends Streaming
 
         $this->savePlaylist($path . ".m3u8");
 
-        return $path . "_" . $reps->end()->getHeight() . "p.m3u8";
+        return $path . "_%v_" . $reps->end()->getHeight() . "p.m3u8";
     }
 
     /**

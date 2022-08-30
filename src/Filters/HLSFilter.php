@@ -82,7 +82,7 @@ class HLSFilter extends FormatFilter
      */
     private function getInitFilename(Representation $rep): string
     {
-        return $this->seg_sub_dir . $this->filename . "_" . $rep->getHeight() ."p_". $this->hls->getHlsFmp4InitFilename();
+        return $this->seg_sub_dir . $this->filename . "_%v_" . $rep->getHeight() ."p_". $this->hls->getHlsFmp4InitFilename();
     }
 
     /**
@@ -92,7 +92,7 @@ class HLSFilter extends FormatFilter
     private function getSegmentFilename(Representation $rep): string
     {
         $ext = ($this->hls->getHlsSegmentType() === "fmp4") ? "m4s" : "ts";
-        return $this->seg_filename . "_" . $rep->getHeight() . "p_%04d." . $ext;
+        return $this->seg_filename . "_%v_" . $rep->getHeight() . "p_%04d." . $ext;
     }
 
     /**
@@ -108,16 +108,52 @@ class HLSFilter extends FormatFilter
             "hls_segment_type"          => $this->hls->getHlsSegmentType(),
             "hls_fmp4_init_filename"    => $this->getInitFilename($rep),
             "hls_segment_filename"      => $this->getSegmentFilename($rep),
-            "s:v"                       => $rep->size2string(),
-            "b:v"                       => $rep->getKiloBitrate() . "k"
+            "master_pl_name"            => "master.m3u8"
         ];
 
-        return array_merge($init,
+        $opt["s:v:0"] = $rep->size2string();
+        $opt["b:v:0"] = $rep->getKiloBitrate() . "k";
+        for($i = 0; $i < $this->hls->getAudioStreamCount() ?? []; $i++){
+            $opt["b:a:" .$i] =  $rep->getAudioKiloBitrate() . "k";
+        }
+
+        $opt["f"] = "hls";
+        $str = '';
+        for($i = 0; $i < $this->hls->getAudioStreamCount() ?? []; $i++){
+            $str .= "a:" . $i . ",agroup:audio";
+            if($i === 0){
+                $str .= ",default:yes";
+            }
+            $str .= " ";
+        }
+        $str .= "v:0,agroup:audio";
+        $opt["var_stream_map"] = $str;
+
+        return array_merge(
+            $init,
+            $opt,
             $this->getAudioBitrate($rep),
             $this->getBaseURL(),
             $this->flags(),
             $this->getKeyInfo());
     }
+
+    /**
+     * @return array
+     */
+    private function mapStreams(): array
+    {
+        $maps[] = "-map";
+        $maps[] = "0:v:0";
+
+        for($i = 0; $i < $this->hls->getAudioStreamCount() ?? []; $i++){
+            $maps[] = "-map";
+            $maps[] = "0:a:" . $i;
+        }
+
+        return $maps;
+    }
+
 
     /**
      * @param Representation $rep
@@ -129,6 +165,7 @@ class HLSFilter extends FormatFilter
             $this->filter,
             $this->getFormatOptions($this->hls->getFormat()),
             Utiles::arrayToFFmpegOpt($this->initArgs($rep)),
+            Utiles::arrayToFFmpegOpt($this->mapStreams()),
             Utiles::arrayToFFmpegOpt($this->hls->getAdditionalParams()),
             ["-strict", $this->hls->getStrict()],
             $this->playlistPath($rep, $not_last)
