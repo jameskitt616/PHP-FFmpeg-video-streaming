@@ -57,24 +57,24 @@ class HLS extends Streaming
     private $subtitles = [];
 
     /** @var int */
-    private $audioStreamCount = 0;
+    private $audios = [];
 
     /**
-     * @param int $audioStreamCount
+     * @param array $audios
      * @return HLS
      */
-    public function setAudioStreamCount(int $audioStreamCount)
+    public function setAudiolanguages(int $audios)
     {
-        $this->audioStreamCount = $audioStreamCount;
+        $this->audios = $audios;
         return $this;
     }
 
     /**
-     * @return int
+     * @return array
      */
-    public function getAudioStreamCount(): int
+    public function getAudioLanguages(): array
     {
-        return $this->audioStreamCount;
+        return $this->audios;
     }
 
 
