@@ -25,6 +25,19 @@ class DASH extends Streaming
     /** @var bool */
     private $generate_hls_playlist = false;
 
+    /** @var int */
+    private $use_timeline = 0;
+
+    /** @var int */
+    private $use_template = 0;
+
+    /** @var bool */
+    private $initSegName = false;
+
+    /** @var bool */
+    private $mediaSegName = false;
+
+
     /**
      * @return mixed
      */
@@ -42,6 +55,80 @@ class DASH extends Streaming
         $this->adaption = $adaption;
         return $this;
     }
+
+
+    /**
+     * @param int $useTimeline
+     * @return DASH
+     */
+    public function setUseTimeLine(int $useTimeline): DASH
+    {
+        $this->use_timeline = $useTimeline;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUseTimeLine(): int
+    {
+        return $this->use_timeline;
+    }
+
+    /**
+     * @param bool $initSegName
+     * @return DASH
+     */
+    public function setInitSegName(bool $initSegName): DASH
+    {
+        $this->initSegName = $initSegName;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getInitSegName(): bool
+    {
+        return $this->initSegName;
+    }
+
+    /**
+     * @param bool $mediaSegName
+     * @return DASH
+     */
+    public function setMediaSegName(bool $mediaSegName): DASH
+    {
+        $this->mediaSegName = $mediaSegName;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getMediaSegName(): bool
+    {
+        return $this->mediaSegName;
+    }
+
+    /**
+     * @param int $useTemplate
+     * @return DASH
+     */
+    public function setUseTemplate(int $useTemplate): DASH
+    {
+        $this->use_template = $useTemplate;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUseTemplate(): int
+    {
+        return $this->use_template;
+    }
+
 
     /**
      * @param string $seg_duration

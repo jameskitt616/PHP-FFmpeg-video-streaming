@@ -56,25 +56,25 @@ class HLS extends Streaming
     /** @var array */
     private $subtitles = [];
 
-    /** @var int */
-    private $audios = [];
+    /** @var array */
+    private $audioTracks = [];
 
     /**
-     * @param array $audios
+     * @param array $audioTracks
      * @return HLS
      */
-    public function setAudiolanguages(int $audios)
+    public function setAudioTracks(array $audioTracks)
     {
-        $this->audios = $audios;
+        $this->audioTracks = $audioTracks;
         return $this;
     }
 
     /**
      * @return array
      */
-    public function getAudioLanguages(): array
+    public function getAudioTracks(): array
     {
-        return $this->audios;
+        return $this->audioTracks;
     }
 
 

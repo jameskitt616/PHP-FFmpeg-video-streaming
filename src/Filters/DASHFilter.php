@@ -69,14 +69,20 @@ class DASHFilter extends FormatFilter
         $name = $this->dash->pathInfo(PATHINFO_FILENAME);
 
         $init = [
-            "use_timeline"      => 0,
-            "use_template"      => 0,
-            //"init_seg_name"     => $name . '_init_$RepresentationID$.$ext$',
-            //"media_seg_name"    => $name . '_chunk_$RepresentationID$_$Number%05d$.$ext$',
+            "use_timeline"      => $this->dash->getUseTimeLine(),
+            "use_template"      => $this->dash->getUseTemplate(),
             "seg_duration"      => $this->dash->getSegDuration(),
             "hls_playlist"      => (int)$this->dash->isGenerateHlsPlaylist(),
             "f"                 => "dash",
         ];
+
+        if($this->dash->getInitSegName()){
+            $init["init_seg_name"] = $name . '_init_$RepresentationID$.$ext$';
+        }
+
+        if($this->dash->getMediaSegName()){
+            $init["media_seg_name"] = $name . '_chunk_$RepresentationID$_$Number%05d$.$ext$';
+        }
 
         return array_merge(
             Utiles::arrayToFFmpegOpt($init),

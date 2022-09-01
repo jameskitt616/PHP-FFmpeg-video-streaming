@@ -113,14 +113,14 @@ class HLSFilter extends FormatFilter
 
         $opt["s:v:0"] = $rep->size2string();
         $opt["b:v:0"] = $rep->getKiloBitrate() . "k";
-        for($i = 0; $i < count($this->hls->getAudioLanguages()) ?? []; $i++){
+        for($i = 0; $i < count($this->hls->getAudioTracks()) ?? []; $i++){
             $opt["b:a:" .$i] =  $rep->getAudioKiloBitrate() . "k";
         }
 
         $opt["f"] = "hls";
         $str = '';
-        for($i = 0; $i < count($this->hls->getAudioLanguages()) ?? []; $i++){
-            $str .= "a:" . $i . ",agroup:audio,language:".$this->hls->getAudioLanguages()[$i];
+        for($i = 0; $i < count($this->hls->getAudioTracks()) ?? []; $i++){
+            $str .= "a:" . $i . ",agroup:audio,language:".$this->hls->getAudioTracks()[$i];
             if($i === 0){
                 $str .= ",default:yes";
             }
@@ -146,7 +146,7 @@ class HLSFilter extends FormatFilter
         $maps[] = "-map";
         $maps[] = "0:v:0";
 
-        for($i = 0; $i < $this->hls->getAudioStreamCount() ?? []; $i++){
+        for($i = 0; $i < count($this->hls->getAudioTracks()) ?? []; $i++){
             $maps[] = "-map";
             $maps[] = "0:a:" . $i;
         }
