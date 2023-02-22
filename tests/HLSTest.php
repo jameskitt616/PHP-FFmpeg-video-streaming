@@ -27,7 +27,6 @@ class HLSTest extends TestCase
     {
         $hls = $this->getHLS();
         $hls->X264();
-
         $this->assertInstanceOf(StreamFormat::class, $hls->getFormat());
     }
 

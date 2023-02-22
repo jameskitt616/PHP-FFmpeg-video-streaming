@@ -182,6 +182,35 @@ class Metadata
     }
 
     /**
+     * @param $metadata array
+     * @return array
+     */
+    public function basic(array $metadata): array
+    {
+        $info = [];
+        $general = $metadata['stream']['resolutions'][0] ?? [];
+        $parts = explode('X', $general['dimension']);
+
+        $info['width'] = $parts[0] ?? '0';
+        $info['height'] = $parts[1] ?? '0';
+        $info['videoBitrate'] = $general['video_kilo_bitrate'] ?? '0';
+        $info['audioBitrate'] = $general['audio_kilo_bitrate'] ?? '0';
+
+        foreach ($metadata['video']['streams'] ?? [] as $streams) {
+            if ($streams['codec_type'] === 'video') {
+                $info['duration'] = !empty($streams['duration']) ? $streams['duration'] : '0';
+                $info['videoCodec'] = !empty($streams['codec_name']) ? $streams['codec_name'] : '';
+                $info['videoFramerate'] = !empty($streams['avg_frame_rate']) ? $streams['avg_frame_rate'] : '0';
+            } elseif ($streams['codec_type'] === 'audio') {
+                $info['audioCodec'] = !empty($streams['codec_name']) ? $streams['codec_name'] : '' ;
+                $info['audioSamplerate'] = !empty($streams['sample_rate']) ? $streams['sample_rate'] : '0';
+            }
+        }
+
+        return $info;
+    }
+
+    /**
      * @param string|null $save_to
      * @param int|null $opts
      * @return array

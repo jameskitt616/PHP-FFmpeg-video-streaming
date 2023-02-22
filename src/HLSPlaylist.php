@@ -48,7 +48,7 @@ class HLSPlaylist
         $tag = '#EXT-X-STREAM-INF:';
         $params = array_merge(
             [
-                "BANDWIDTH" => $rep->getKiloBitrate() * 1024 + $this->getAudioBitrate($rep),
+                "BANDWIDTH"  => $rep->getKiloBitrate() * 1024 + $this->getAudioBitrate($rep),
                 "RESOLUTION" => $rep->size2string(),
                 "NAME" => "\"" . $rep->getHeight() . "\""
             ],
