@@ -53,7 +53,18 @@ class Media
      */
     public function hls(): HLS
     {
-        return new HLS($this);
+        $audioTracks = [];
+        $hls = new HLS($this);
+
+        foreach ($this->media->getFFProbe()->streams($this->media->pathfile)->audios()->getIterator() as $stream) {
+            if (!empty($stream->get('tags')['language'])) {
+                $audioTracks[] = $stream->get('tags')['language'];
+            }
+        }
+
+        $hls->setAudioTracks($audioTracks);
+
+        return $hls;
     }
 
     /**
