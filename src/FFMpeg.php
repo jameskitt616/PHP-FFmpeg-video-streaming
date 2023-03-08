@@ -12,6 +12,7 @@
 namespace Streaming;
 
 use FFMpeg\Exception\ExceptionInterface;
+use FFMpeg\Exception\InvalidArgumentException;
 use FFMpeg\FFMpeg as BFFMpeg;
 use FFMpeg\FFProbe;
 use FFMpeg\Media\Video;
@@ -42,7 +43,18 @@ class FFMpeg
     public function open(string $path, bool $is_tmp = false): Media
     {
         try {
-            return new Media($this->ffmpeg->open($path), $is_tmp);
+            if (null === $streams = $this->ffmpeg->getFFProbe()->streams($path)) {
+                throw new \FFMpeg\Exception\RuntimeException(sprintf('Unable to probe "%s".', $path));
+            }
+
+            if(count($streams->videos()) == 0 && count($streams->audios())  == 0) {
+                throw new InvalidArgumentException('Unable to detect file format, only audio and video supported');
+            }
+
+            return new Media(
+                new Video($path, $this->ffmpeg->getFFMpegDriver(), $this->ffmpeg->getFFProbe()),
+                $is_tmp);
+
         } catch (ExceptionInterface $e) {
             if ($is_tmp) {
                 sleep(.5);

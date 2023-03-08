@@ -11,11 +11,16 @@
 
 namespace Streaming;
 
+use Streaming\Filters\AudioHLSFilter;
 use Streaming\Filters\HLSFilter;
 use Streaming\Filters\StreamFilterInterface;
 
 class HLS extends Streaming
 {
+
+    /** @var bool */
+    private $isVideo;
+
 
     /** @var string */
     private $hls_time = 10;
@@ -58,6 +63,24 @@ class HLS extends Streaming
 
     /** @var array */
     private $audioTracks = [];
+
+    /**
+     * @param bool $isVideo
+     * @return DASH
+     */
+    public function setIsVideo(bool $isVideo): HLS
+    {
+        $this->isVideo = $isVideo;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsVideo(): bool
+    {
+        return $this->isVideo;
+    }
 
     /**
      * @param array $audioTracks
@@ -303,11 +326,15 @@ class HLS extends Streaming
     }
 
     /**
-     * @return HLSFilter
+     * @return HLSFilter | AudioHLSFilter
      */
     protected function getFilter(): StreamFilterInterface
     {
-        return new HLSFilter($this);
+        if($this->getIsVideo()) {
+            return new HLSFilter($this);
+        }
+
+        return new AudioHLSFilter($this);
     }
 
     /**

@@ -11,11 +11,15 @@
 
 namespace Streaming;
 
+use Streaming\Filters\AudioDASHFilter;
 use Streaming\Filters\DASHFilter;
 use Streaming\Filters\StreamFilterInterface;
 
 class DASH extends Streaming
 {
+    /** @var bool */
+    private $isVideo;
+
     /** @var string */
     private $adaption;
 
@@ -37,6 +41,23 @@ class DASH extends Streaming
     /** @var bool */
     private $mediaSegName = false;
 
+    /**
+     * @param bool $isVideo
+     * @return DASH
+     */
+    public function setIsVideo(bool $isVideo): DASH
+    {
+        $this->isVideo = $isVideo;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsVideo(): bool
+    {
+        return $this->isVideo;
+    }
 
     /**
      * @return mixed
@@ -167,11 +188,16 @@ class DASH extends Streaming
     }
 
     /**
-     * @return DASHFilter
+     * @return DASHFilter|AudioDASHFilter
      */
     protected function getFilter(): StreamFilterInterface
     {
-        return new DASHFilter($this);
+
+        if($this->getIsVideo()) {
+            return new DASHFilter($this);
+        }
+
+        return new AudioDASHFilter($this);
     }
 
     /**

@@ -45,7 +45,10 @@ class Media
      */
     public function dash(): DASH
     {
-        return new DASH($this);
+        $dash = new DASH($this);
+        $dash->setIsVideo(empty($this->media->getFFProbe()->streams($this->media->pathfile)->videos()));
+
+        return $dash;
     }
 
     /**
@@ -63,6 +66,7 @@ class Media
         }
 
         $hls->setAudioTracks($audioTracks);
+        $hls->setIsVideo(empty($this->media->getFFProbe()->streams($this->media->pathfile)->videos()));
 
         return $hls;
     }

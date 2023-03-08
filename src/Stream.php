@@ -118,6 +118,7 @@ abstract class Stream implements StreamInterface
      */
     private function run(): void
     {
+
         $this->media->addFilter($this->getFilter());
 
         $commands = (new CommandBuilder($this->media, $this->getFormat()))->build($this->getFormat(), $this->getPath());
