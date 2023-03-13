@@ -46,7 +46,7 @@ class Media
     public function dash(): DASH
     {
         $dash = new DASH($this);
-        $dash->setIsVideo(empty($this->media->getFFProbe()->streams($this->media->pathfile)->videos()));
+        $dash->setIsVideo(empty($this->media->getFFProbe()->streams($this->media->getPathfile())->videos()));
 
         return $dash;
     }
@@ -59,14 +59,14 @@ class Media
         $audioTracks = [];
         $hls = new HLS($this);
 
-        foreach ($this->media->getFFProbe()->streams($this->media->pathfile)->audios()->getIterator() as $stream) {
+        foreach ($this->media->getFFProbe()->streams($this->media->getPathfile())->audios()->getIterator() as $stream) {
             if (!empty($stream->get('tags')['language'])) {
                 $audioTracks[] = $stream->get('tags')['language'];
             }
         }
 
         $hls->setAudioTracks($audioTracks);
-        $hls->setIsVideo(empty($this->media->getFFProbe()->streams($this->media->pathfile)->videos()));
+        $hls->setIsVideo(empty($this->media->getFFProbe()->streams($this->media->getPathfile())->videos()));
 
         return $hls;
     }
