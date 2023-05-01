@@ -61,8 +61,10 @@ class Media
 
         foreach ($this->media->getFFProbe()->streams($this->media->getPathfile())->audios()->getIterator() as $stream) {
             if (!empty($stream->get('tags')['language'])) {
-                $audioTracks[] = $stream->get('tags')['language'];
-            }
+                $audioTracks[] = [
+                    'codac'    => $stream->get('codec_name'),
+                    'language' => $stream->get('tags')['language'],
+                ];            }
         }
 
         $hls->setAudioTracks($audioTracks);

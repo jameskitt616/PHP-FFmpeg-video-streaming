@@ -113,8 +113,11 @@ class HLSFilter extends FormatFilter
 
         $opt["s:v:0"] = $rep->size2string();
         $opt["b:v:0"] = $rep->getKiloBitrate() . "k";
+
         for($i = 0; $i < count($this->hls->getAudioTracks()) ?? []; $i++){
+            $track = $this->hls->getAudioTracks()[$i];
             $opt["b:a:" .$i] =  $rep->getAudioKiloBitrate() . "k";
+            //$opt["c:a:" .$i] =  $track['codac'] === "ac3" ? 'ac3' : 'aac';
         }
 
         $opt["f"] = "hls";
