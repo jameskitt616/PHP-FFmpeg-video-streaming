@@ -123,7 +123,8 @@ class HLSFilter extends FormatFilter
         $opt["f"] = "hls";
         $str = '';
         for($i = 0; $i < count($this->hls->getAudioTracks()) ?? []; $i++){
-            $str .= "a:" . $i . ",agroup:audio,language:".$this->hls->getAudioTracks()[$i];
+            $track = $this->hls->getAudioTracks()[$i];
+            $str .= "a:" . $i . ",agroup:audio,language:" . $track['language'];
             if($i === 0){
                 $str .= ",default:yes";
             }
