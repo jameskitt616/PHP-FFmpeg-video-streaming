@@ -1,6 +1,6 @@
 {
-    "name": "aminyazdanpanah/php-ffmpeg-video-streaming",
-    "description": "📼 PHP FFMpeg - Video Streaming - DASH, HLS http://video.aminyazdanpanah.com",
+    "name": "jameskitt616/PHP-FFmpeg-video-streaming",
+    "description": "📼 PHP FFMpeg - Video Streaming - DASH, HLS",
     "type": "library",
     "keywords": [
         "dash",
@@ -29,13 +29,18 @@
         "key-rotation",
         "clearkey"
     ],
-    "homepage": "https://github.com/aminyazdanpanah/PHP-FFmpeg-video-streaming",
+    "homepage": "https://github.com/jameskitt616/PHP-FFmpeg-video-streaming",
     "license": "MIT",
     "authors": [
         {
             "name": "Amin Yazdanpanah",
             "email": "contact@aminyazdanpanah.com",
             "homepage": "https://www.aminyazdanpanah.com"
+        },
+        {
+            "name": "jameskitt616",
+            "email": "contact.opsec@simplelogin.com",
+            "homepage": "https://jameskitt616.one/contact"
         }
     ],
     "minimum-stability": "dev",
